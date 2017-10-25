@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+         <% if(action =='add'){ %>
+            Add New City
+          <% }else{ %>
+            Edit City
+          <% } %>
+    </title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- Bootstrap Datepicker -->
+    <link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+     #addpick,#adddrop{
+        cursor : pointer;
+     }
+    </style>
+  </head>
+  <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+  <body class="hold-transition skin-blue layout-top-nav">
+    <div class="wrapper">
+      <header class="main-header">
+      	 <%- include ../layout/topnav.html %>
+      </header>
+      <!-- Full Width Column -->
+      <div class="content-wrapper">
+        <div class="container">
+          <!-- Content Header (Page header) -->
+          <section class="content-header">
+            <h1>
+             <% if(action =='add'){ %>
+               Add New City
+             <% }else{ %>
+               Edit City
+             <% } %>           
+            </h1>
+          </section>
+
+          <!-- Main content -->
+          <section class="content">
+           <p>
+             <%  if(typeof errmsg !== 'undefined'){ %>
+           	 <%= errmsg %>
+           	 <% } %>
+           </p>
+          	<form role="form" action="/admin/city/save" method="post">
+   				<div class="box box-primary">
+   					<form role="form">
+   						<div class="box-body">
+   							<div class="row">
+   								<div class="col-md-6">
+   									<div class="form-group">
+		   								<label>City Name</label>
+		   								<input type="text" class="form-control" name="name" value="<% if(typeof city !== 'undefined'){ %><%= city.name %><% } %>">
+		   							</div>
+		   							<div class="form-group">
+		   								<label>State</label>
+		   								<input type="text" class="form-control" name="state" value="<% if(typeof city !== 'undefined'){ %><%= city.state %><% } %>">
+		   							</div>
+		   							<div class="form-group">
+		   								<label>Pickup/Drop points</label>		   								
+		   							</div>
+		   							<% if(typeof city !== 'undefined'){ %>
+		   							<% for(i = 0;i < city.points.length; i++){ %>
+		   							<div class="form-group">
+		   								<div class="input-group">
+		   									<input type="text" name="pdpt" class="form-control pdpt" value="<%= city.points[i] %>">
+		   									<div class="input-group-addon">
+		   										<a class="pdpt_close">
+		   											<i class="fa fa-close"></i>
+		   										</a>
+		   									</div>
+		   								</div>
+		   							</div>   
+		   							<% 
+		   							   } 
+		   							   }
+		   							%>		   							
+		   							<div class="form-group" id="adddppt_container">
+		   								<a id="adddppt">Add Pickup/Drop Point</a>
+		   							</div>
+   								</div>
+   							</div>				
+   						</div>
+   						<div class="box-footer">
+   							<% if(action == 'add'){ %>
+   								<button type="submit" class="btn btn-primary">Add</button>
+   								<input type="hidden" name="action" value="add">
+   							<% }else if(action == 'save'){ %>
+   								<button type="submit" class="btn btn-primary">Save</button>
+   							    <a class="del" target="/admin/city/delete?id=<%= city._id %>" class="btn">Delete</a>
+   							    <input type="hidden" name="action" value="save">
+   							    <input type="hidden" name="id" value="<% if(typeof city !== 'undefined'){ %><%= city._id %><% } %>">
+   							<% } %>   	  							
+   						</div>
+   					</form>
+   				</div>          		
+          	</form>
+          </section><!-- /.content -->
+        </div><!-- /.container -->
+      </div><!-- /.content-wrapper -->
+      <%- include ../layout/footer.html %>
+    </div><!-- ./wrapper -->
+
+    <!-- jQuery 2.1.4 -->
+    <script src="/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- bootstrap time picker -->
+    <script src="/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <!-- bootstrap date picker -->
+    <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <!-- SlimScroll -->
+    <script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/dist/js/app.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>    
+    <script type="text/javascript">
+	    $(function () {	    
+	    	$("a.del").click(function(){
+	    		var r = confirm("Are you sure you want to delete popin?");
+	    		var target = $(this).attr('target');
+	    		if(r  == true){
+	    			window.location.href = target;
+	    		}
+	    		
+	    	});
+	    	$("#adddppt").click(function(){
+	    		var html = '<div class="form-group"><div class="input-group"><input type="text" name="pdpt" class="form-control pdpt"><div class="input-group-addon"><a class="pdpt_close"><i class="fa fa-close"></i></a></div></div></div>';
+	    		$("#adddppt_container").before(html);
+	    		$(".pdpt_close").click(function(){
+		    		var parent = $(this).parent().parent().parent();
+		    		parent.remove();
+		    	});
+	    	});	   	
+	    	
+	    	$(".pdpt_close").click(function(){
+	    		var parent = $(this).parent().parent().parent();
+	    		parent.remove();
+	    	});
+	    });
+    </script>
+  </body>
+</html>      

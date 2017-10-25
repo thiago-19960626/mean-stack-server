@@ -1,0 +1,80 @@
+<nav class="navbar navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="/admin" class="navbar-brand"><b>TripLuv</b> Admin Dashboard</a>
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <i class="fa fa-bars"></i>
+      </button>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown <% if(session.controller == 'ability'){ %>active<% } %>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Availability <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/admin/ability/add">Add New</a></li>
+            <li><a href="/admin">View All</a></li>
+          </ul>
+        </li>
+        <li <% if(session.controller == 'booking'){ %>class="active"<% } %>><a href="/admin/booking/list">Bookings</a></li>
+        <li <% if(session.controller == 'user'){ %>class="active"<% } %>><a href="/admin/user/list">Users</a></li>
+        <li class="dropdown <% if(session.controller == 'cab'){ %>active<% } %>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cabs <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/admin/cab/add">Add New</a></li>
+            <li><a href="/admin/cab/list">View All</a></li>
+          </ul>
+        </li>
+        <li class="dropdown <% if(session.controller == 'route'){ %>active<% } %>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Routes <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/admin/route/add">Add New</a></li>
+            <li><a href="/admin/route/list">View All</a></li>
+          </ul>
+        </li>
+        <li class="dropdown <% if(session.controller == 'city'){ %>active<% } %>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cities <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/admin/city/add">Add New</a></li>
+            <li><a href="/admin/city/list">View All</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+    <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- User Account Menu -->
+          <li class="dropdown user user-menu">
+            <!-- Menu Toggle Button -->
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- The user image in the navbar-->
+              <img src="/images/<% if(session.auth.photo != null){ %><%= session.auth.photo %><% }else{ %>NO_PHOTO.png<% } %>" class="user-image" alt="User Image">
+              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs"><%= session.auth.name %></span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- The user image in the menu -->
+              <li class="user-header">
+                <img src="/images/<% if(session.auth.photo != null){ %><%= session.auth.photo %><% }else{ %>NO_PHOTO.png<% } %>" class="img-circle" alt="User Image">
+                <p>
+                  <%= session.auth.name  %> - Administrator
+                  <small>Member since <%= session.auth.createdat %></small>
+                </p>
+              </li>              
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="/admin/user/profile" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a href="/admin/user/logout" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-custom-menu -->
+  </div><!-- /.container-fluid -->
+</nav>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Availability List</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- DataTables -->
+    <link rel="stylesheet" href="/plugins/datatables/dataTables.bootstrap.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/plugins/timepicker/bootstrap-timepicker.min.css">
+    <!-- Bootstrap Datepicker -->
+    <link rel="stylesheet" href="/plugins/datepicker/datepicker3.css">
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/dist/css/skins/_all-skins.min.css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+     #addpick,#adddrop{
+        cursor : pointer;
+     }
+    </style>
+  </head>
+  <!-- ADD THE CLASS layout-top-nav TO REMOVE THE SIDEBAR. -->
+  <body class="hold-transition skin-blue layout-top-nav">
+    <div class="wrapper">
+      <header class="main-header">
+      	 <%- include ../layout/topnav.html %>
+      </header>
+      <!-- Full Width Column -->
+      <div class="content-wrapper">
+        <div class="container">
+          <!-- Content Header (Page header) -->
+          <section class="content-header">
+            <h1>
+              Availability List              
+            </h1>
+          </section>
+
+          <!-- Main content -->
+          <section class="content">
+           <p>
+             <% if(typeof errmsg !=='undefined'){ %>
+           	 <%= errmsg %>
+           	 <% } %>
+           </p>
+            <div class="form-group">
+			  	<div class="input-group">
+			  	    <div class="input-group-addon">
+			  			<label>Source </label>
+			  		</div>
+			  		<select class="form-control" id="sc">
+			  		    <option></option>
+			  		 <% if(typeof cities !== 'undefined'){ %>
+			  		 <% for(i = 0;i < cities.length;i ++){ %>
+			  		    <option><%= cities[i].name  %></option>
+			  		 <% } %>
+			  		 <% } %>
+			  		</select>
+			  		<div class="input-group-addon">
+			  			<label>Destination</label>
+			  		</div>
+			  		<select class="form-control" id="ec">
+			  		  <option></option>
+			  		 <% if(typeof cities !== 'undefined'){ %>
+			  		 <% for(i = 0;i < cities.length;i ++){ %>
+			  		    <option><%= cities[i].name  %></option>
+			  		 <% } %>
+			  		 <% } %>
+			  		</select>
+			  		<div class="input-group-addon">
+			  			<label>Date</label>
+			  		</div>
+			  		<input type="text" class="form-control datepicker" id="date">
+			  		<div class="input-group-addon">
+			  			<label>Cab</label>
+			  		</div>
+			  		<input type="text" class="form-control" id="cab_id">
+			  		<div class="input-group-addon">
+			  			<label>Status</label>
+			  		</div>
+			  		<select class="form-control" id="status">
+			  		    <option></option>
+			  			<option>SCHEDULED</option>
+			  			<option>CANCELLED</option>
+			  			<option>CONFIRMED</option>
+			  		</select>
+			  	</div>
+			</div>
+          	<form role="form" action="/admin/city/create" method="post">
+   				<div class="box box-primary">
+   					<div class="box-body">   					  
+	                  <table id="ability_table" class="table table-bordered table-hover">	                   	                   
+	                    <thead>
+	                      <tr>
+	                        <th>ID</th>
+	                        <th>From</th>
+	                        <th>To</th>	 
+	                        <th>Date</th>
+	                        <th>Start Time</th>
+	                        <th>Cab</th>
+	                        <th>Status</th>
+	                        <th></th>
+	                        <th></th>
+	                        <th></th>                      
+	                      </tr>	                      
+	                    </thead>	
+	                     <tbody>                    
+                         <% for(i = 0;i < abilities.length;i++){ %>
+                         <tr>
+                         	<td><%= abilities[i]._id %></td>
+                         	<td><%= abilities[i].startcity.name %></td>
+                         	<td><%= abilities[i].endcity.name %></td>
+                         	<td> 
+                         	    <% dt = new Date(abilities[i].date) %>
+                         		<%= dt.getFullYear()+'-'+("0" + (dt.getMonth() + 1)).slice(-2)+ "-"+("0" + (dt.getDate())).slice(-2) %>
+                         	</td>
+                         	<td><%= abilities[i].startingtime %></td>
+                         	<td><%= abilities[i].cabtype.vendor +" "+ abilities[i].cabtype.model  %></td>
+                         	<td>
+                         	   <%=  constants.AVAILABILITYSTATUS[abilities[i].status] %>
+                         	</td>
+                         	<td><a href="/admin/ability/edit?id=<%= abilities[i]._id %>" class="btn">View/Edit</a></td>
+                         	<td><a aid="<%= abilities[i]._id %>" class="assign btn <% if(abilities[i].driver != null){ %>btn-danger<% }else{ %>btn-success<% } %>"><% if(abilities[i].driver != null){ %>Reassign<% }else{ %>Assign&nbsp;<% } %></a></td>
+                         	<td><a href="/admin/ability/booking?id=<%= abilities[i]._id %>&total=<%= abilities[i].numseats %>" class="btn btn-primary">Bookings</a></td>
+                         </tr>
+                         <% } %>
+	                    </tbody>
+	                   </table>
+	                 </div>
+   				</div>          		
+          	</form>
+          </section><!-- /.content -->
+        </div><!-- /.container -->
+      </div><!-- /.content-wrapper -->
+      <%- include ../layout/footer.html %>
+    </div><!-- ./wrapper -->
+    
+    <!-- modal -->
+    <div class="modal fade" id="assignmodel">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    		   <div class="modal-header" style="background-color:#3c8dbc;">
+    		   		<button class="close" aria-label="Close" data-dismiss="modal" type="button"><i class="fa fa-close"></i></button>
+    		   		<span><font color="white" size="5"><b>Assign Driver</b></font></span>
+    		   </div>
+    		   <div class="modal-body">
+    		      <p id="modal_errmsg"></p>
+    		      <div class="form-group">
+    		         <label>Driver Name</label>
+    		         <input type="text" class="form-control" id="drivername">
+    		      </div>
+    		      <div class="form-group">
+    		         <label>Contact Number</label>
+    		         <input type="text" class="form-control" id="drivercontact">
+    		      </div>
+    		      <div class="form-group">
+    		         <label>Car Registration Number</label>
+    		         <input type="text" class="form-control" id="carregnumber">
+    		      </div>
+    		   </div>
+    		   <div class="modal-footer">
+    		      <a class="btn btn-primary" id="assign_save">Assign</a>
+    		   </div>
+    		</div>
+    	</div>
+    </div>
+    
+    <!-- jQuery 2.1.4 -->
+    <script src="/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <!-- Bootstrap 3.3.5 -->
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- DataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables/dataTables.bootstrap.min.js"></script>
+    
+    <!-- bootstrap time picker -->
+    <script src="/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <!-- bootstrap date picker -->
+    <script src="/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <!-- SlimScroll -->
+    <script src="/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="/plugins/fastclick/fastclick.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/dist/js/app.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/dist/js/demo.js"></script>    
+    <script type="text/javascript"> 
+       $.fn.dataTable.ext.search.push(
+    	    function( settings, data, dataIndex ) {
+    	        var sc = $("#sc").val();
+    	        var dc = $("#ec").val();
+    	        var date = $("#date").val();
+    	        var cab_id = $("#cab_id").val();
+    	        var status = $("#status").val();
+    	        if(data[1].search(sc) >= 0 && data[2].search(dc) >= 0 && data[3].search(date) >= 0 && data[5].search(cab_id) >= 0 && data[6].search(status) >= 0){
+    	        	return true;
+    	        }
+    	        return false;
+    	    }
+    	);
+	    $(function () {	
+	    	
+	    	$(".datepicker").datepicker({ autoclose: true,format :'yyyy-mm-dd'});
+	    	var table = $('#ability_table').DataTable({
+	            "paging": true,
+	             "lengthChange": false,
+	             "ordering": true,
+	             "order":[[ 3,"asc"]],
+	             "info": true,
+	             "autoWidth": false	              
+	          });  
+	    	
+             $("#sc, #ec, #date, #cab_id, #status").change(function(){
+	    		table.draw();
+	    	});
+	    	$('.dataTables_filter').addClass("hidden");
+	    	$(".modal").modal('hide');
+	    	$(".assign").click(function(){
+	    		$("#assign_save").attr('aid',$(this).attr('aid'));	    		
+	    		$("#ajax_loader").css("display","block");
+	    		$.ajax({
+	    			url : '<%= constants.HOST %>/api/ability/get',
+	    			type: 'post',
+	    			data :'id='+$(this).attr('aid'),
+	    			dataType:'json',
+	    			success: function(ret){
+	    				if(ret.err == false){
+	    					if(ret.data.driver != null){
+		    					$("#drivername").val(ret.data.driver.name);
+		    					$("#drivercontact").val(ret.data.driver.contact);
+		    					$("#carregnumber").val(ret.data.driver.registration);
+	    					}
+	    				}
+	    				
+	    				$("#ajax_loader").css("display","none");
+	    				$("#assignmodel").modal('show');
+	    			}
+	    		});
+	    	});
+	    	$("#assign_save").click(function(){
+	    		var id = $(this).attr('aid');
+	    		var driverName = $("#drivername").val().trim();
+	    		var drivercontact = $("#drivercontact").val().trim();
+	    		var carregnumber = $("#carregnumber").val().trim();
+	    		if(driverName == ''){
+	    			$("#modal_errmsg").html("please enter driver name.");
+	    		}else if(drivercontact == ''){
+	    			$("#modal_errmsg").html("please enter driver contact number.");
+	    		}else if(carregnumber == ''){
+	    			$("#modal_errmsg").html("please enter car registration number.");
+	    		}else{
+	    			$(this).html("processing...");
+	    			$.ajax({
+	    				url : "<%= constants.HOST %>/api/ability/assign",
+	    				type : "post",
+	    				data :"id="+id+"&name="+driverName+"&contact="+drivercontact+"&reg="+carregnumber+"&token="+"<%= session.auth.token %>",
+	    				dataType:"json",
+	    				success: function(ret){
+	    					if(ret.err == false){
+	    						$("a[aid="+id+"]").removeClass("btn-success");
+	    						$("a[aid="+id+"]").addClass("btn-danger");
+	    						$("a[aid="+id+"]").html("Reassign");
+	    					}else{
+	    						alert(ret.errmsg);
+	    					}
+	    					$(this).html("Assign");
+	    					$("#assignmodel").modal('hide');	    					
+	    				}
+	    			});
+	    		}
+	    	});
+	    });
+    </script>
+     <div id="ajax_loader">
+       <center><img src="/images/loader.gif" style="margin-top:300px;"></center>
+    </div>
+  </body>
+</html>
+      

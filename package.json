@@ -1,0 +1,33 @@
+{
+  "name": "admin1",
+  "version": "0.1.0",
+  "description": "admin1",
+  "main": "./app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
+  },
+  "dependencies": {		
+		"express":"*",
+		"body-parser":"*",
+		"multer":"~0.1.6",
+		"method-override":"*",
+		"mongoose":"*",
+		"md5":"*",
+		"express-session":"~1.10.1",
+	    "express-ejs-layouts":"~1.1.0",    
+	    "ejs":"~1.0.0",
+	    "connect-flash":"~0.1.1",
+	    "request":"*",
+	    "cookie-parser":"*",
+	    "fs":"*"
+ },
+  "repository": "",
+  "keywords": [
+    "Node.js",
+    "Eclipse",
+    "Nodeclipse"
+  ],
+  "author": "",
+  "license": "BSD",
+  "readmeFilename": "README.md"
+}
